@@ -5,6 +5,7 @@ int main()
     //测试重载后的remove函数
     SingleLinkedList<int> a1{1,2,3,4,5};
     a1.remove(3);
+    a1.remove(1);
     a1.printList();
 
     SingleLinkedList<int> a{1,2,3,4,5};
