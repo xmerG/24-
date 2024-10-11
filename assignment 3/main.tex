@@ -1,0 +1,92 @@
+\documentclass[a4paper]{article}
+\usepackage[affil-it]{authblk}
+\usepackage[backend=bibtex,style=numeric]{biblatex}
+\usepackage{ctex}
+\usepackage{listings}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{float} 
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+
+\begin{document}
+
+\title{数据结构与算法第三次作业报告}
+
+
+\author{Lingxi Gao
+  \thanks{Electronic address: \texttt{3210105373@zju.edu.cn}}}
+\affil{Zhejiang University }
+
+
+\date{\today}
+
+\maketitle
+
+
+
+
+
+
+% ============================================
+\section*{问题描述}
+在目前的设计中，remove()函数会删除currentPos之后的元素，而如果用户想先查看某个元素x是否在单链表中，如果在，则删除该元素，这一点目前的remove()函数无法做到。
+\section*{改进思路}
+我的思路是重载一个remove(T \_val)函数，实现以下功能：\\
+输入\_val的值，如果在链表中，则删除该值；如果不在链表中，则报错"the value you put is not in current list"并终止进程。\\
+具体地，首先调用find()函数确认\_val是否在当前SingleLinkedList中，由于执行完find()操作之后，如果\_val在SingleLinkeddList之中，currentpos会指向\_val所在的节点。之后再实现删除currentpos指向的节点即可。详细的代码如下：\\
+\begin{lstlisting}[language=C++, caption={改进后的代码}]
+	template<typename T>
+	void SingleLinkedList<T>::remove(T _val){
+		if(find(_val)){
+			Node* p=head;
+			if(head!=currentPos){
+				while (p->next!=currentPos){
+					p=p->next;
+				}
+				Node* p1=p->next->next;
+				delete p->next;
+				p->next=p1;
+				currentPos=p;     
+				--size;
+			}
+			else{
+				Node* p1=head->next;
+				delete currentPos;
+				head=p1;
+				currentPos=head;
+			}
+		}
+		else{
+			cerr<<"the value you put is not in current single linked list"<<endl;
+			exit(1);
+		}
+	}
+\end{lstlisting}
+\begin{lstlisting}[language=C++, caption={测试}]
+	#include "LinkedList.h"
+	int main()
+	{
+		SingleLinkedList<int> a1{1,2,3,4,5};
+		a1.remove(3);
+	    a1.remove(1);
+		a1.printList();
+		return 0;
+	};
+\end{lstlisting}
+\section*{运行结果}
+最终运行结果如下:
+
+
+2	4	5
+
+
+
+
+\end{document}
