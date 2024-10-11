@@ -248,14 +248,22 @@ template<typename T>
 void SingleLinkedList<T>::remove(T _val){
     if(find(_val)){
         Node* p=head;
-        while (p->next!=currentPos){
+        if(head!=currentPos){
+            while (p->next!=currentPos){
             p=p->next;
+            }
+            Node* p1=p->next->next;
+            delete p->next;
+            p->next=p1;
+            currentPos=p;     
+            --size;
         }
-        Node* p1=p->next->next;
-        delete p->next;
-        p->next=p1;
-        currentPos=p;     
-        --size;
+        else{
+            Node* p1=head->next;
+            delete currentPos;
+            head=p1;
+            currentPos=head;
+        }
     }
     else{
         cerr<<"the value you put is not in current single linked list"<<endl;
