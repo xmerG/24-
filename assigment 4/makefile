@@ -11,6 +11,8 @@ LATEX = pdflatex
 
 # 默认目标
 all: $(EXEC)
+	@echo "Running $(EXEC):"
+	./$(EXEC)
 
 # 生成可执行文件
 $(EXEC): $(SRC)
