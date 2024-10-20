@@ -58,8 +58,11 @@ int main()
     l5.print();
     cout<<"to check if 10 is in l5"<<l5.find(10)<<endl;
     cout<<"to check if 1 is in l5"<<l5.find(1)<<endl;
-
-
+    List<int>l7;
+    l7=move(l5);
+    l7.print();
+    l5.print();
+    
     auto itr1=l2.begin();
     ++itr1;
     l2.insert(itr1, 0.03);
