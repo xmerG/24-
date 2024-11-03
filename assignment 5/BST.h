@@ -10,6 +10,8 @@
  */
 
 #include <iostream>
+using namespace std;
+ // namespace name
 
 /// 临时性的异常类，用于表示树为空的异常
 class UnderflowException { };
@@ -409,8 +411,13 @@ private:
                 parent=current;
                 current=current->left;
             }
+            //如果最小元素的节点不是根节点t
             if(parent!=nullptr){
                 parent->left=current->right;
+            }
+            //如果是根节点
+            else{
+                t=current->right;
             }
             current->right=nullptr;
             return current;
@@ -425,16 +432,20 @@ private:
         //追踪当前节点和父亲节点
         BinaryNode *parent=nullptr;
         BinaryNode *current=t;
-        //要找的元素不在当前位置，更新parent和cruuent
+        //要找的元素不在当前位置，更新parent和crruent
         while (current->element!=x){
             if(x<current->element){
                 parent=current;
                 current=current->left;
             }
-            else if(x>current->element){
+            else {
                 parent=current;
                 current=current->right;
             }
+        }
+        //要删除的元素不在tree里面，不处理
+        if(current==nullptr){
+            return;
         }
         //此时要删除的节点就是current指向的节点
         //如果要删除的节点左右子结点均不为空，使用current的右节点代替当前节点
@@ -442,19 +453,18 @@ private:
             BinaryNode *newroot=detachMin(current->right);
             newroot->left=current->left;
             newroot->right=current->right;
+            current->left=nullptr;
+            current->right=nullptr;
             //此时要删除的节点就是root，current指向root
             if(parent==nullptr){
                 t=newroot;
             }
             //要删除的节点还有父节点，这时候要把newroot接到父节点上
+            else if(x<parent->element){
+                parent->left=newroot;
+            }
             else{
-                //要删除的节点是parent的左节点
-                if(x<parent->element){
-                    parent->left=newroot;
-                }
-                else if(x>parent->element){
-                    parent->right=newroot;
-                }
+                parent->right=newroot;
             }
         }
         //要删除的节点只有一个子节点
@@ -466,8 +476,10 @@ private:
             else{
                 parent->right=(current->left != nullptr) ? current->left : current->right;
             }
-        }
-        delete current;        
+            current->left=nullptr;
+            current->right=nullptr;
+        }   
+        delete current;
     }  
 
 

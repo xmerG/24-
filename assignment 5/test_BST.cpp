@@ -1,5 +1,6 @@
 #include <iostream>
 #include "BST.h"  // 假设 BinarySearchTree 类定义在这个头文件中
+using namespace std;
 
 void testBinarySearchTree() {
     BinarySearchTree<int> bst;
@@ -12,6 +13,9 @@ void testBinarySearchTree() {
     bst.insert(7);
     bst.insert(12);
     bst.insert(18);
+    bst.insert(20);
+    bst.insert(1);
+    bst.insert(4);
 
     // 测试打印树结构
     std::cout << "Initial Tree:" << std::endl;
@@ -26,13 +30,22 @@ void testBinarySearchTree() {
     std::cout << "Contains 20? " << (bst.contains(20) ? "Yes" : "No") << std::endl;
 
     // 测试删除功能
+    bst.remove(5);
+    std::cout << "Tree after removing 5:" << std::endl;
+    bst.printTree();
+
     bst.remove(7);
     std::cout << "Tree after removing 7:" << std::endl;
+    bst.printTree();
+
+    bst.remove(15);
+    std::cout << "Tree after removing 15:" << std::endl;
     bst.printTree();
 
     bst.remove(10);
     std::cout << "Tree after removing 10:" << std::endl;
     bst.printTree();
+
 
     // 测试清空树
     bst.makeEmpty();
@@ -68,7 +81,7 @@ void testBinarySearchTree() {
     bst6.printTree();
 
     BinarySearchTree<int> bst7;
-    bst7.findMax();  // 测试异常处理
+    bst7.findMax(); // 测试异常处理
 }
 
 int main() {
