@@ -364,32 +364,7 @@ private:
      * @param x 要移除的元素
      * @param t 当前节点指针
      */
-    /*void remove(const Comparable &x, BinaryNode * &t) {
-        /// 这个逻辑其实是 find and remove, 从 t 开始
-        if (t == nullptr) {
-            return;  /// 元素不存在
-        }
-        if (x < t->element) {
-            remove(x, t->left);
-        } else if (x > t->element) {
-            remove(x, t->right);
-        } 
-        /// 进入以下这两个分支，都是说明找到了要删除的元素
-        else if (t->left != nullptr && t->right != nullptr) {  /// 有两个子节点
-            /// 将右子树中的最小元素替换当前节点，这里实际上只是替换值，不是替换节点
-            t->element = findMin(t->right)->element;
-            /// 然后递归删除右子树中的最小元素
-            remove(t->element, t->right);
-            /// 这是一种效率较低的做法，更好的做法是做节点的替换和移动
-            /// 但会更加复杂，我们在后面再讨论
-        } else {
-            /// 有一个或没有子节点的情形是简单的
-            BinaryNode *oldNode = t;
-            t = (t->left != nullptr) ? t->left : t->right;
-            delete oldNode;
-        }
-    }*/
-       void remove(const Comparable &x, BinaryNode * &t) {
+       /*void remove(const Comparable &x, BinaryNode * &t) {
         /// 这个逻辑其实是 find and remove, 从 t 开始
         if (t == nullptr) {
             return;  /// 元素不存在
@@ -412,8 +387,8 @@ private:
             t = (t->left != nullptr) ? t->left : t->right;
             delete oldNode;
         }
-    }
-    BinaryNode *detachMin(BinaryNode *&t){
+    }*/
+    /*BinaryNode *detachMin(BinaryNode *&t){
         if(t->left!=nullptr){
             detachMin(t->left);
         }
@@ -422,41 +397,79 @@ private:
         oldt->right=nullptr;
         return oldt;
 
-    }
-    /*void remove(const Comparable &x, BinaryNode *&t){
+    }*/
+    BinaryNode *detachMin(BinaryNode *&t){
+        if(t==nullptr){
+            return nullptr;
+        }
+        else{
+            BinaryNode *parent=nullptr;
+            BinaryNode *current=t;
+            while(current->left!=nullptr){
+                parent=current;
+                current=current->left;
+            }
+            if(parent!=nullptr){
+                parent->left=current->right;
+            }
+            current->right=nullptr;
+            return current;
+
+        }
+    } 
+    void remove(const Comparable &x, BinaryNode *&t){
+        //空BST直接返回
         if(t==nullptr){
             return;
         }
-        if(t->element==x){
-            BinaryNode *t1=detachMin(t->right);
-            t1->left=t->left;
-            t1->right=t->right;
-            t=t1;
-            delete t1;
+        //追踪当前节点和父亲节点
+        BinaryNode *parent=nullptr;
+        BinaryNode *current=t;
+        //要找的元素不在当前位置，更新parent和cruuent
+        while (current->element!=x){
+            if(x<current->element){
+                parent=current;
+                current=current->left;
+            }
+            else if(x>current->element){
+                parent=current;
+                current=current->right;
+            }
         }
-        else{
-            BinaryNode *newt=t;
-            while(newt->element!=x){
-                if(newx<t->element){
-                    newt=newt->left;
+        //此时要删除的节点就是current指向的节点
+        //如果要删除的节点左右子结点均不为空，使用current的右节点代替当前节点
+        if(current->left!=nullptr && current->right!=nullptr){
+            BinaryNode *newroot=detachMin(current->right);
+            newroot->left=current->left;
+            newroot->right=current->right;
+            //此时要删除的节点就是root，current指向root
+            if(parent==nullptr){
+                t=newroot;
+            }
+            //要删除的节点还有父节点，这时候要把newroot接到父节点上
+            else{
+                //要删除的节点是parent的左节点
+                if(x<parent->element){
+                    parent->left=newroot;
                 }
-                else if(x>newt->element){
-                    newt=newt->right;
+                else if(x>parent->element){
+                    parent->right=newroot;
                 }
             }
-                if(newt->left!=nullptr && newt->right!=nullptr){
-                    BinaryNode *t1=detachMin(newt->right);
-                    BinaryNode *parent=parentnode(newt);
-            
-                }
-                else {
-                    BinaryNode *oldNode = newt;
-                    newt = (newt->left != nullptr) ? newt->left : newt->right;
-                    delete oldNode;
-                }
         }
+        //要删除的节点只有一个子节点
+        else{
+            //要删除parent的左节点
+            if(x<parent->element){
+                parent->left=(current->left != nullptr) ? current->left : current->right;
+            }
+            else{
+                parent->right=(current->left != nullptr) ? current->left : current->right;
+            }
+        }
+        delete current;        
+    }  
 
-    }*/
 
    
 
