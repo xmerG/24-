@@ -5,6 +5,10 @@ using namespace std;
 void testBinarySearchTree() {
     BinarySearchTree<int> bst;
 
+    bst.remove(1);
+    cout<<"after removing 1"<<endl;
+    bst.printTree();
+
     // 测试插入功能
     bst.insert(10);
     bst.insert(5);
@@ -28,6 +32,12 @@ void testBinarySearchTree() {
     // 测试 contains 功能
     std::cout << "Contains 7? " << (bst.contains(7) ? "Yes" : "No") << std::endl;
     std::cout << "Contains 20? " << (bst.contains(20) ? "Yes" : "No") << std::endl;
+
+    // 测试删除功能
+    bst.remove(50);
+    std::cout << "Tree after removing 50:" << std::endl;
+    bst.printTree();
+
 
     // 测试删除功能
     bst.remove(5);

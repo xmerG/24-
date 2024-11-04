@@ -433,7 +433,7 @@ private:
         BinaryNode *parent=nullptr;
         BinaryNode *current=t;
         //要找的元素不在当前位置，更新parent和crruent
-        while (current->element!=x){
+        while (current !=nullptr && current->element!=x){
             if(x<current->element){
                 parent=current;
                 current=current->left;
