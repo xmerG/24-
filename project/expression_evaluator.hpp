@@ -127,7 +127,7 @@
                 char d=new_expression[i+1];
                 if(isdigit(c)|| c=='.'){
                     currentnum+=c;
-                    if(! isdigit(d)){
+                    if(! isdigit(d) && d!='.'){
                         nums.push_back(stod(currentnum));
                         currentnum.clear();
                     }
