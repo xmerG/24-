@@ -1,0 +1,78 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+\usepackage{xcolor}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{white},   % 背景颜色
+	commentstyle=\color{green},       % 注释颜色
+	keywordstyle=\color{magenta},     % 关键字颜色
+	numberstyle=\tiny\color{gray},    % 行号样式
+	stringstyle=\color{red},          % 字符串颜色
+	basicstyle=\ttfamily\footnotesize, % 基本字体
+	breakatwhitespace=false,           % 断行时不在空格处断行
+	breaklines=true,                   % 自动换行
+	numbers=left,                     % 行号位置
+	numbersep=5pt,                   % 行号与代码间距
+	frame=single,                     % 单线框
+	rulecolor=\color{black},          % 框的颜色
+	captionpos=b,                     % 标题位置
+	escapeinside={(*@}{@*)}           % 特殊字符转义
+}
+\lstset{style=mystyle}
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{高凌溪, 3210105373}
+\chead{2024DS编程作业报告}
+\rhead{\today}
+\begin{abstract}
+	本次编程作业主要重写了\texttt{BST.h}中的\texttt{remove()}函数，实现了按AVL树的方式删除。
+\end{abstract}
+\section{\texttt{remove()}函数的设计思路}
+\begin{enumerate}
+	\item
+	整体思路：AVL树和BST只有一点不同，即AVL树需要两侧子树的平衡。因此在实现\texttt{remove()}的时候，新增一个\texttt{balance()}函数，用于平衡子树。具体地，用之前BST的\texttt{remove()}方式找到要删除的节点，删掉；然后依次回溯父节点，检查节点是否平衡，不平衡进行\texttt{balance()}，知道回溯到root节点停止。由于需要回溯父节点，这次作业不会继续使用上次\texttt{remove()}的方式，改用递归。
+	\item 
+	\texttt{balance()}的具体实现：如果是左子树的左节点引起失衡，右旋一次；右子树的右孩子引起失衡，左旋一次；左子树的右节点引起失衡，左旋一次，右旋一次；右子树的左节点引起失衡，右旋一次，左旋一次。其中左旋和右旋分别通过\texttt{singleLeftRotate}和\texttt{singleRightRotate}实现。
+\end{enumerate}
+
+
+
+
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
