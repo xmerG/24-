@@ -8,6 +8,7 @@ template<typename T>
 void adjust(vector<T> &v, int i, const int &n){
     int child;
     T temp;
+    //利用move避免不必要的复制
     for(temp=move(v[i]); 2*i+1<n; i=child){
         child=2*i+1;
         if(child !=n-1 && v[child]<v[child+1]){
@@ -25,11 +26,13 @@ void adjust(vector<T> &v, int i, const int &n){
 
 template<typename T>
 void sort_Heap(vector<T> &v){
+    //建最大堆
     for(int i=v.size()/2-1; i>=0; --i){
         adjust(v,i,v.size());
     }
     for(int j=v.size()-1; j>0; --j){
         swap(v[0],v[j]);
+        //只需要调整第一个节点即可
         adjust(v,0,j);
     }
 }

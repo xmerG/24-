@@ -16,6 +16,8 @@ enum class testType{
     duplicate
 };
 
+
+//检查排序是否成功
 template<typename T>
 void Checkorder(const vector<T> &v){
     for(int i=0; i<v.size()-1;++i){
@@ -54,15 +56,17 @@ public:
     else if(type==testType::duplicate){
     // 创建随机数生成器
     random_device rd; // 随机数种子
-    mt19937 gen(rd()); // 使用Mersenne Twister生成器
-    uniform_int_distribution<> dis(1,1000); 
+    mt19937 gen(rd()); 
+    uniform_int_distribution<> dis(1,1000);  //生成1-1000以内的整数，一定会重复
     for(int i=0; i<n;++i){
         v[i]=dis(gen);
     }
     }
+    //创建两个一模一样的vector
     v1=v;
     }    
 
+    //比较运行时间
     void compareTime(){
         make_heap(v.begin(),v.end());
         auto start1=chrono::high_resolution_clock::now();
@@ -76,6 +80,7 @@ public:
         auto end2=chrono::high_resolution_clock::now();
         auto duration2=chrono::duration_cast<chrono::milliseconds>(end2-start2);
         cout<<"My heapSort takes "<<duration2.count()<<" milliseconds."<<endl;
+        //检查排序
         Checkorder(v1);
     }
 };
