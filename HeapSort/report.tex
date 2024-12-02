@@ -1,0 +1,99 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+\usepackage{xcolor}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{white},   % 背景颜色
+	commentstyle=\color{green},       % 注释颜色
+	keywordstyle=\color{magenta},     % 关键字颜色
+	numberstyle=\tiny\color{gray},    % 行号样式
+	stringstyle=\color{red},          % 字符串颜色
+	basicstyle=\ttfamily\footnotesize, % 基本字体
+	breakatwhitespace=false,           % 断行时不在空格处断行
+	breaklines=true,                   % 自动换行
+	numbers=left,                     % 行号位置
+	numbersep=5pt,                   % 行号与代码间距
+	frame=single,                     % 单线框
+	rulecolor=\color{black},          % 框的颜色
+	captionpos=b,                     % 标题位置
+	escapeinside={(*@}{@*)}           % 特殊字符转义
+}
+\lstset{style=mystyle}
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{高凌溪, 3210105373}
+\chead{2024DS编程作业报告}
+\rhead{\today}
+\begin{abstract}
+	本次编程作业主要实现了堆排序。
+\end{abstract}
+\section{设计思路}
+\begin{enumerate}
+	\item
+	\texttt{HeapSort}设计思路：\\
+	定义了\texttt{adjust(vector<T> \&v, int i, const int \&n)}函数和\texttt{sort\_Heap()}函数。\texttt{adjust()}将\texttt{vector v}以$i$ 为根节点，长度为$n$的部分调整为最大堆。具体实现是通过小元素的下沉实现的。\texttt{sort\_Heap()}函数首先将\texttt{vector}变成最大堆：具体的，从最后一个有子节点的元素开始，向上一次调整。然后将最大的元素与最后一个元素交换位置，利用堆的性质，对第一个元素执行\texttt{adjust()}函数。
+	\item 
+	测试文件设计思路:\\
+	为了保证测试结果有一定的可重复性，设置随机数种子。分别生成了随机序列、按照升序排列的序列、按降序排列的序列和有部分重复的序列\texttt{v}。然后用复制的方式生成一个一样的子列\texttt{v1}，\texttt{v}用\texttt{std::sort\_heap()}排序，\texttt{v1}用我写的\texttt{sort\_Heap()}函数排序。利用\texttt{void Checkorder(const vector<T> \&v)}这个函数来检查是否成功按照升序排列。利用\texttt{Check}类里的\texttt{compareTime()}比较运行时间。
+\end{enumerate}
+\section{程序运行结果}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+	\hline & my sort\_Heap time & std::sort\_heap time \\
+	\hline random sequence & 313 ms & 502 ms \\
+	\hline ordered sequence & 233 ms & 420 ms \\
+	\hline reverse sequence & 210 ms & 429 ms \\
+	\hline repetitive sequence & 275 ms & 465 ms \\
+	\hline
+\end{tabular}
+\end{center}
+\section{结果分析}
+可以看出我写的\texttt{sort\_Heap}函数要比\texttt{std::sort\_heap}函数速度快，我猜测原因如下：
+\begin{enumerate}
+	\item 
+	查询C++库的实现代码可以看到
+	\begin{lstlisting}
+		template <class _RandomAccessIterator, class _Compare>
+		inline _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 void
+		sort_heap(_RandomAccessIterator __first, _RandomAccessIterator __last, _Compare __comp)
+	\end{lstlisting}
+	\texttt{std::sort\_heap()}函数不仅可以对\texttt{vector}的容器进行排序，也可以对其他容器里的数据排序，而我实现的\texttt{sort\_Heap()}只针对\texttt{vector},因此可以充分的利用\texttt{vector}的特点
+\end{enumerate}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
