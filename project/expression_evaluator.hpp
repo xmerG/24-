@@ -2,18 +2,19 @@
     #include<vector>
     #include<cmath>
     #include<string>
+    #include<algorithm>
     using namespace std;
     class expression_evaluator{
     private:
-        string expressions="";
+        string expressions="";  //record the expression
+        // to check a char is an operator or not, regard e as a special operator
         bool isoperator(const char &c){
-        if(c=='+' || c=='-' || c=='*' || c=='/' || 
-                c=='e' ){
-                    return true;
-                }
-                else{
-                    return false;
-                }
+            if(c=='+' || c=='-' || c=='*' || c=='/' || c=='e' || c=='^'){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
 
         //判断运算符优先级大小
@@ -24,11 +25,14 @@
             else if(c=='/' || c=='*'){
                 return 2;
             }
-            else if(c=='e'){
+            else if(c=='^'){
                 return 3;
             }
-            else if(c=='.'){
+            else if(c=='e'){
                 return 4;
+            }
+            else if(c=='.'){
+                return 5;
             }
             else{
                 return 0;
@@ -55,15 +59,20 @@
             else if(c=='e'){
                 return x*pow(10,y);
             }
+            else if(c=='^'){
+                return pow(x,y);
+            }
             else{
                 return 0;
             }
         }
-
+        //deal with negative numbers
         void modify(){
-            for(int i=0; i<expressions.length(); ++i){
-                if(expressions[i]=='(' && expressions[i+1]=='-'){
-                    expressions.insert(i+1,1,'0');
+            expressions.erase(remove(expressions.begin(), expressions.end(), ' '), expressions.end());
+            for(int i=1; i<expressions.length(); ++i){
+                if(expressions[i-1]=='(' && expressions[i]=='-'){
+                    expressions.insert(i,1,'0');
+                    ++i;
                 }
             }
         }
@@ -82,7 +91,7 @@
                 bool b=isoperator(expressions[i+1]);
                 if((i==0 && a) || (i==l-2 && b) ||
                     (a && b) || (a&& expressions[i+1]==')')||
-                    (expressions[i]=='('&& b)){
+                    (expressions[i]=='('&& b) || (expressions[i]=='.' && expressions[i+1]=='.')){
                         return false;
                     }
             }
@@ -117,6 +126,10 @@
                 return -1;
             }
             int l=expressions.length();
+            if(l==0){
+                cerr<<"no expression!"<<endl;
+                return -1;
+            }
             string new_expression=expressions.append(" ");
             string currentnum;
             //用vector实现栈
@@ -180,4 +193,4 @@
             }
             return nums.back();
         }
-    };
+};
