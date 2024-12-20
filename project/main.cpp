@@ -16,6 +16,9 @@ void testIsLegal() {
     expression_evaluator expr6("3 + 4 * 2 +");
     expression_evaluator expr7("/3 + 4 * 2 +");
     expression_evaluator expr8("1..2+2");
+    expression_evaluator expr9("(2+3).5");
+    expression_evaluator expr10("1.(2-1)");
+    expression_evaluator expr11("3+()+2");
 
     cout << "Test isLegal for valid expression 3 + 4 " << (expr1.isLegal() ? "Pass" : "Fail") << endl;  // Pass
     cout << "Test isLegal for invalid expression +3 + 4 " << (expr2.isLegal() ? "Pass" : "Fail") << endl;  // Fail
@@ -25,6 +28,9 @@ void testIsLegal() {
     cout << "Test isLegal for invalid expression 3 + 4 * 2 +: " << (expr6.isLegal() ? "Pass" : "Fail") << endl;  // Fail
     cout << "Test isLegal for invalid expression /3 + 4 * 2 + " << (expr7.isLegal() ? "Pass" : "Fail") << endl;  // Fail
     cout << "Test isLegal for invalid expression 1..2+2 " << (expr8.isLegal() ? "Pass" : "Fail") <<endl;  //Fail
+    cout << "Test isLegal for invalid expression (2+3).5 " << (expr9.isLegal() ? "Pass" : "Fail") <<endl;  //Fail
+    cout << "Test isLegal for invalid expression 1.(2-1) " << (expr10.isLegal() ? "Pass" : "Fail") <<endl;  //Fail
+    cout << "Test isLegal for invalid expression 3+()+2 " << (expr11.isLegal() ? "Pass" : "Fail") <<endl;  //Fail
 }
 void testIsMatch() {
     expression_evaluator expr1("3 + (4 * 2)");
@@ -47,6 +53,7 @@ void testEvaluate() {
     expression_evaluator expr7("10 ^ 3");  
     expression_evaluator expr8("3 + (4 * 2)");  // 3 + (4 * 2) 应该是 3 + 8 = 11
     expression_evaluator expr9("2.1e1+3^2-(-2)*3"); //36
+
 
     cout << "Test evaluate (3 + 4) = " << expr1.evaluate() << endl;  // 7
     cout << "Test evaluate (5 * 6) = " << expr2.evaluate() << endl;  // 30
@@ -96,17 +103,20 @@ void testEmptyExpression() {
     cout << "Test empty expression: " << expr.evaluate() << endl;  // 应该输出错误
 }
 void testComprehensive() {
-    expression_evaluator expr1("3 + 5 * 2 - 1");
-    expression_evaluator expr2("(3+5)*(2-1)");
-    expression_evaluator expr3("2+3*(6/3)e1");
-    expression_evaluator expr4("4e2^0.5");
-    expression_evaluator expr5("0.08e(-1 )^(1/3)");
+    expression_evaluator expr1("3 + 5 * 2 - 1"); //12
+    expression_evaluator expr2("(3+5)*(2-1)"); //8
+    expression_evaluator expr3("2+3*(6/3)e1"); //62
+    expression_evaluator expr4("4e2^0.5"); //20
+    expression_evaluator expr5("0.08e(-1 )^(1/3)");  //0.2
+    expression_evaluator expr6("0.21.1+2");  
+    expression_evaluator expr7("0022+0.11e2-(-3)^2"); //24 
     cout << "Test Comprehensive expression: 3 + 5 * 2 - 1= " << expr1.evaluate() << endl;    
     cout << "Test Comprehensive expression: (3+5)*(2-1)= " << expr2.evaluate() << endl;    
     cout << "Test Comprehensive expression: 2+3*(6/3)e1= " << expr3.evaluate() << endl;  
     cout << "Test Comprehensive expression: 4e2^0.5= " << expr4.evaluate() << endl;  
     cout << "Test Comprehensive expression: 0.08e(-1 )^(1/3) = " << expr5.evaluate() << endl;  
-
+    cout << "Test Comprehensive expression: 0.21.1+2 = " << expr6.evaluate() << endl;  
+    cout << "Test Comprehensive expression: 0022+0.11e2-(-3)^2 = " << expr7.evaluate() << endl;  
 }
 
 

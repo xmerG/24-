@@ -86,12 +86,16 @@
         //判断表达式是否合法,运算符开头或者结尾以及两个非括号的运算符连续出现
         bool isLegal(){
             int l=expressions.size();
-            for(int i=0; i<l-1; ++i){
-                bool a=isoperator(expressions[i]);
-                bool b=isoperator(expressions[i+1]);
-                if((i==0 && a) || (i==l-2 && b) ||
-                    (a && b) || (a&& expressions[i+1]==')')||
-                    (expressions[i]=='('&& b) || (expressions[i]=='.' && expressions[i+1]=='.')){
+           for(int i=0; i<l-1; ++i){
+                bool a=!isdigit(expressions[i]) && expressions[i]!='(' && expressions[i]!=')';
+                bool b=!isdigit(expressions[i+1])&& expressions[i+1]!='(' && expressions[i+1]!=')';
+                bool c= expressions[i]=='.';
+                bool d=expressions[i+1]=='.';
+                if((i==0 && a ) || (i==l-2 && b ) ||
+                    (a && b) || (a&& expressions[i+1]==')')||(expressions[i]=='('&&expressions[i+1]==')')||
+                    (expressions[i]=='('&& b) ||(c && expressions[i+1]==')') ||(c && expressions[i+1]=='(') ||
+                    (expressions[i]=='(' && d) ||(expressions[i]==')' && d)||
+                    (expressions[i]=='(' && expressions[i+1]==')')){
                         return false;
                     }
             }
@@ -135,15 +139,25 @@
             //用vector实现栈
             vector<double> nums;  //用于存放数字
             vector<char> ops;  //存放操作符
+            int counter=0; //record the number of '.'
             for(int i=0; i<l;++i){
                 char c=new_expression[i];
                 char d=new_expression[i+1];
-                if(isdigit(c)|| c=='.'){
+                if(isdigit(c)){
                     currentnum+=c;
                     if(! isdigit(d) && d!='.'){
                         nums.push_back(stod(currentnum));
                         currentnum.clear();
+                        counter=0;
                     }
+                }
+                else if(c=='.' && counter==0){
+                    currentnum+=c;
+                    ++counter;
+                }
+                else if(c=='.' && counter!=0){
+                    cerr<<"invalid expression"<<endl;
+                    return -1;
                 }
 
                 if(isoperator(c)){
