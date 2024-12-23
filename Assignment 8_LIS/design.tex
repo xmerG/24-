@@ -77,7 +77,7 @@
 	\end{abstract}
 	\section{设计思路（动态规划）}
 	\begin{enumerate}
-		\item 首先将数列存到一个数组中\texttt{double array[n]=\{$a_1,\ a_2,\ a_3,\ ...,\ a_n$\}}用$d[i]$表示以数组中第$i$个元素结尾的最长严格递增子列的长度，那么$d[i]=max(d[i],d[j]+1),\quad 1 \le j \le i$ 如果$J<i,\ a[j]<a[i]$（说明\texttt{array[i]}能接在\texttt{array[j]}后面）。之后初始化一个元素全为$1$的数组\texttt{d}，这里不妨设下标都是从$1$开始（更符合生活中的习惯）。
+		\item 首先将数列存到一个数组中\texttt{double array[n]=\{$a_1,\ a_2,\ a_3,\ ...,\ a_n$\}}用$d[i]$表示以数组中第$i$个元素结尾的最长严格递增子列的长度，那么$d[i]=max(d[i],d[j]+1),$ 如果$1 \le j \le i,\ a[j]<a[i]$（说明\texttt{array[i]}能接在\texttt{array[j]}后面）。之后初始化一个元素全为$1$的数组\texttt{d}，这里不妨设下标都是从$1$开始（更符合生活中的习惯）。
 		\item 伪代码如下：
 		\begin{lstlisting}[language=C++, caption={找到最长递增子列长度}, label={lst:operators}]
 			double array[n]={a1, a2,a3,...an}
